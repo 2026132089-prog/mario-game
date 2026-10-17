@@ -436,17 +436,17 @@
 
     <script>
         // ==========================================
-        // 🌐 PASTE YOUR FIREBASE CONFIG KEYS HERE:
+        // 🌐 FIREBASE CONFIGURATION
         // ==========================================
         const firebaseConfig = {
             apiKey: "AIzaSyDbfuhwOsSQhKnUizMye8fUERA2Sh6Auuw",
-  authDomain: "mario-game-leaderboard-40610.firebaseapp.com",
-  databaseURL: "https://mario-game-leaderboard-40610-default-rtdb.asia-southeast1.firebasedatabase.app",
-  projectId: "mario-game-leaderboard-40610",
-  storageBucket: "mario-game-leaderboard-40610.firebasestorage.app",
-  messagingSenderId: "465178011985",
-  appId: "1:465178011985:web:da3f0ead1df95bccfe8b70",
-  measurementId: "G-73DNEKRSB3"
+            authDomain: "mario-game-leaderboard-40610.firebaseapp.com",
+            databaseURL: "https://mario-game-leaderboard-40610-default-rtdb.asia-southeast1.firebasedatabase.app",
+            projectId: "mario-game-leaderboard-40610",
+            storageBucket: "mario-game-leaderboard-40610.firebasestorage.app",
+            messagingSenderId: "465178011985",
+            appId: "1:465178011985:web:da3f0ead1df95bccfe8b70",
+            measurementId: "G-73DNEKRSB3"
         };
 
         let db = null;
@@ -681,7 +681,7 @@
                 stars: player.stars
             };
 
-            // Also keep local fallback
+            // Keep local fallback
             let localScores = JSON.parse(localStorage.getItem('mario_class_scores') || '[]');
             const existingIndex = localScores.findIndex(s => s.id === player.id);
             if (existingIndex >= 0) {
@@ -693,7 +693,7 @@
             }
             localStorage.setItem('mario_class_scores', JSON.stringify(localScores));
 
-            // Push to Firebase Cloud Database if configured
+            // Push to Firebase Cloud Database
             if (cloudEnabled && db) {
                 const safeKey = player.id.replace(/[.#$[\]]/g, "_");
                 db.ref('leaderboard/' + safeKey).set(scoreData).then(() => {
