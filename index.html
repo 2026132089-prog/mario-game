@@ -1,3 +1,6 @@
+Here is your complete, fully restored `index.html` file with the **Reset Leaderboard** button added and the missing code fully restored:
+
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -427,8 +430,9 @@
                 </table>
             </div>
 
-            <div style="margin-top: 20px; text-align: center;">
+            <div style="margin-top: 20px; text-align: center; display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;">
                 <button class="btn btn-blue" onclick="returnToMap()">RETURN TO MAP</button>
+                <button class="btn" style="background-color: var(--mario-red);" onclick="resetLeaderboard()">🗑️ RESET LEADERBOARD</button>
             </div>
         </div>
 
@@ -988,6 +992,31 @@
             });
         }
 
+        function resetLeaderboard() {
+            const confirmReset = confirm("⚠️ Are you sure you want to reset all scores on the leaderboard? This action cannot be undone!");
+            
+            if (!confirmReset) return;
+
+            // 1. Clear Local Storage
+            localStorage.removeItem('mario_class_scores');
+
+            // 2. Clear Firebase Realtime Database
+            if (cloudEnabled && db) {
+                db.ref('leaderboard').remove()
+                    .then(() => {
+                        alert("✅ Cloud leaderboard reset successfully!");
+                        showLeaderboard();
+                    })
+                    .catch((err) => {
+                        console.error("Failed to clear cloud database:", err);
+                        alert("❌ Error resetting cloud leaderboard: " + err.message);
+                    });
+            } else {
+                alert("✅ Local scores reset successfully!");
+                showLeaderboard();
+            }
+        }
+
         function escapeHtml(text) {
             const map = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' };
             return text.replace(/[&<>"']/g, function(m) { return map[m]; });
@@ -995,3 +1024,5 @@
     </script>
 </body>
 </html>
+
+```
