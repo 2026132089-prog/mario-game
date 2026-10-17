@@ -520,40 +520,274 @@
         }
 
         const worldsData = [
+            // WORLD 1: 2.1 EARLY BOOKS AND PAPER
             [
-                { q: "What is the Siddur, dated around 840 AD?", options: ["A Jewish prayer book", "The oldest surviving printed book", "An ancient Egyptian papyrus scroll", "A Mayan codex"], answer: 0 },
-                { q: "The Gutenberg Bible (A.K.A. 42-line Bible) is famously associated with which invention?", options: ["Papyrus harvesting", "Movable-type printing press in the 15th century", "Industrial bookbinding cloth tapes", "Microfilm production"], answer: 1 },
-                { q: "What is true about the St. Cuthbert Gospel (also known as the Stonyhurst Gospels)?", options: ["It was discovered in Bulgaria in 1950", "It is Europe's oldest known surviving intact book, measuring ~3.5 x 5 inches", "It is written in ancient Chinese on hemp waste", "It is a 500 BC gold plate"], answer: 1 },
-                { q: "Where is the famous Book of Kells currently kept?", options: ["The Coptic Museum in Cairo", "Trinity College Library in Dublin, Ireland", "The British Museum", "Culhuacan Paper Mill, USA"], answer: 1 },
-                { q: "What distinguishes the Diamond Sūtra?", options: ["It is the oldest Scottish book remaining in Scotland", "It is considered to be the oldest surviving dated printed book in the world", "It is an Etruscan Gold Book found in a river", "It is a 42-line Hebrew prayer book"], answer: 1 }
+                {
+                    q: "What is the Siddur, dated around 840 AD?",
+                    options: [
+                        "A Jewish prayer book",
+                        "The oldest surviving printed book",
+                        "An ancient Egyptian papyrus scroll",
+                        "A Mayan codex"
+                    ],
+                    answer: 0
+                },
+                {
+                    q: "The Gutenberg Bible is famously also known as what?",
+                    options: [
+                        "The 42-line Bible",
+                        "The Stonyhurst Gospel",
+                        "The Celtic Psalter",
+                        "The Madrid Codex"
+                    ],
+                    answer: 0
+                },
+                {
+                    q: "Which book is considered to be the oldest surviving dated printed book in the world?",
+                    options: [
+                        "Diamond Sūtra",
+                        "The Book of Kells",
+                        "Siddur",
+                        "The Celtic Psalter"
+                    ],
+                    answer: 0
+                },
+                {
+                    q: "Where is the famous Book of Kells currently kept?",
+                    options: [
+                        "Trinity College Library in Dublin, Ireland",
+                        "The Coptic Museum in Cairo, Egypt",
+                        "The British Museum in London",
+                        "Ancient Pyrgi sanctuary"
+                    ],
+                    answer: 0
+                },
+                {
+                    q: "Where was the Etruscan Gold Book discovered 70 years ago?",
+                    options: [
+                        "Whilst digging a canal off the Strouma river in Bulgaria",
+                        "In the tomb of Saint Cuthbert of Lindisfarne",
+                        "In an excavation at Ancient Pyrgi",
+                        "At Culhuacan paper mill"
+                    ],
+                    answer: 0
+                }
             ],
+
+            // WORLD 2: 2.2 HISTORICAL EVOLUTION OF PAPER AND BOOKS
             [
-                { q: "Around what year did the ancient Egyptians develop papyrus, a smooth and flexible writing material?", options: ["Around 4,000 BC", "Around 3,000 BC", "Around AD 105", "Around AD 1411"], answer: 1 },
-                { q: "Who invented paper in AD 105 during the Han dynasty of China using sodden hemp waste?", options: ["Louis-Nicolas Robert", "Charles Stillwell", "Ts'ai Lun", "Johannes Gutenberg"], answer: 2 },
-                { q: "In what year did Johann Gutenberg invent the movable type printing press in Germany?", options: ["AD 751", "AD 1009", "AD 1411", "AD 1588"], answer: 2 },
-                { q: "Who invented the first papermaking machine in AD 1798 while working as a clerk and inspector of personnel?", options: ["William Rittenhouse", "Louis-Nicolas Robert", "Charles Stillwell", "Ziyad ibn Salih"], answer: 1 },
-                { q: "What did Charles Stillwell invent in AD 1883?", options: ["The microfilm camera", "A machine to make brown paper bags used in supermarkets", "Magnetic audio recording tape", "The optical laser disk"], answer: 1 }
+                {
+                    q: "Who invented paper in A.D. 105 during the Han dynasty using sodden hemp waste?",
+                    options: [
+                        "Tsai Lun",
+                        "Ziyad ibn Salih",
+                        "Louis-Nicolas Robert",
+                        "Charles Stillwell"
+                    ],
+                    answer: 0
+                },
+                {
+                    q: "In A.D. 751, who led back Chinese prisoners skilled in crafts to spread papermaking from Samarkand westward?",
+                    options: [
+                        "Ziyad ibn Salih",
+                        "Tsai Lun",
+                        "Johannes Gutenberg",
+                        "William Rittenhouse"
+                    ],
+                    answer: 0
+                },
+                {
+                    q: "Where was the first paper mill in Europe established in A.D. 1250 using linen and cotton?",
+                    options: [
+                        "Sicily",
+                        "Xativa, Spain",
+                        "France",
+                        "England"
+                    ],
+                    answer: 0
+                },
+                {
+                    q: "Who invented the first papermaking machine in A.D. 1798?",
+                    options: [
+                        "Louis-Nicolas Robert",
+                        "Charles Stillwell",
+                        "Johannes Gutenberg",
+                        "William Rittenhouse"
+                    ],
+                    answer: 0
+                },
+                {
+                    q: "What did Charles Stillwell invent in A.D. 1883 that is widely used in supermarkets?",
+                    options: [
+                        "Machine to make brown paper bags",
+                        "Movable type printing press",
+                        "First papermaking machine",
+                        "Microfilm camera"
+                    ],
+                    answer: 0
+                }
             ],
+
+            // WORLD 3: HISTORY OF BOOKS & BOOKBINDING
             [
-                { q: "What were among the earliest materials used for writing before papyrus rolls?", options: ["Plastic sheets and magnetic tapes", "Clay tablets (originating in Mesopotamia)", "Microfilm reels", "Cotton and linen paper"], answer: 1 },
-                { q: "Which of the following describes Islamic Bookbinding techniques (starting 7th century)?", options: ["Influenced by Coptic traditions, featuring wooden book covers, case-binding, and gold tooling", "Exclusively used plastic binder clips and synthetic resins", "Relied entirely on unstitched papyrus scrolls", "Invented the 1883 brown paper bag machine"], answer: 0 },
-                { q: "How did bookbinding change during the Industrial Revolution in the 1800s?", options: ["Machines replaced manual techniques, cloth tapes replaced cords, and false bands were added to spines", "Books were permanently carved onto gold plates", "Paper rolls were banned entirely across Europe", "Books were printed solely using microfiche sheets"], answer: 0 },
-                { q: "What was a major advantage of papyrus rolls as a writing surface?", options: ["It could absorb ink without easily smudging and remained in use for a long time", "It was made from plastic polymers", "It required no sunlight to read", "It could be played in a tape drive"], answer: 0 },
-                { q: "When was the St. Cuthbert Gospel discovered?", options: ["In 1104 when his tomb was opened to transfer his relics", "In 1964 in an ancient sanctuary", "In AD 105 during the Han dynasty", "In 1798 at a paper mill"], answer: 0 }
+                {
+                    q: "Which writing surface originated in Mesopotamia among the earliest writing materials?",
+                    options: [
+                        "Clay tablets",
+                        "Papyrus rolls",
+                        "Parchment codex",
+                        "Paper sheets"
+                    ],
+                    answer: 0
+                },
+                {
+                    q: "What distinctive techniques developed in Islamic bookbinding starting in the 7th century?",
+                    options: [
+                        "Wooden covers, case-binding, and gold tooling",
+                        "Plastic binder clips and synthetic glues",
+                        "Metal rings and spiral wires",
+                        "Unstitched papyrus bindings"
+                    ],
+                    answer: 0
+                },
+                {
+                    q: "What is true about the St. Cuthbert Gospel (Stonyhurst Gospels)?",
+                    options: [
+                        "It is Europe's oldest known surviving intact book measuring ~3.5 x 5 inches",
+                        "It was printed on Gutenberg's movable type press in 1411",
+                        "It consists of 3 gold plates found in a river canal",
+                        "It is written in Chinese block printing"
+                    ],
+                    answer: 0
+                },
+                {
+                    q: "In Johannes Gutenberg's 15th-century printing press, what major advantage improved book production efficiency?",
+                    options: [
+                        "Individual letters could be arranged and printing arrangements reused later",
+                        "It produced automatic brown paper bags for stores",
+                        "It recorded digital audio on magnetic tape",
+                        "It scanned images using optical lasers"
+                    ],
+                    answer: 0
+                },
+                {
+                    q: "How did bookbinding change during the Industrial Revolution in the 1800s?",
+                    options: [
+                        "Machines replaced manual techniques, cloth tapes replaced cords, and false bands were added",
+                        "Books were carved onto gold plates exclusively",
+                        "Paper rolls completely replaced bound books",
+                        "All books were printed on microfiche flat sheets"
+                    ],
+                    answer: 0
+                }
             ],
+
+            // WORLD 4: CODEX & MODERN ARCHIVAL MATERIALS
             [
-                { q: "What were the main advantages of the Codex over papyrus rolls and wax tablets?", options: ["Readers could open directly to a particular section, both sides of pages could be used, and longer texts could be compiled into one book", "It was magnetic and could store computer data", "It required a laser beam to read words", "It was waterproof and floated on water"], answer: 0 },
-                { q: "What is the primary function of Magnetic Tape in archival materials?", options: ["To display still images in a planned sequence", "To record audio/video or store computer data", "To store digital files read by a laser", "To provide reduced-size copies of paper documents on a reel"], answer: 1 },
-                { q: "What are Microfilms used for?", options: ["Playing background music in supermarkets", "Holding reduced-size copies of documents", "Preserving physical animal skins", "Binding holy texts with gold tooling"], answer: 1 },
-                { q: "What do Photographs preserve in archival collections?", options: ["Visual evidence of people, places, or events", "Digital computer binary code via laser", "Audio cassettes and video recordings", "Siddur prayer scriptures from 840 AD"], answer: 0 },
-                { q: "How do Optical Disks function?", options: ["They are magnetic tapes read by tape drives", "They are digital storage media that use laser technology to read or write data", "They are glass slides shown in a sequence", "They are clay tablets carved in Mesopotamia"], answer: 1 }
+                {
+                    q: "What were the main advantages of the Codex over papyrus rolls and wax tablets?",
+                    options: [
+                        "Readers could open directly to a section, both sides of pages could be used, and longer texts compiled",
+                        "It stored audio and video recordings on magnetic tape",
+                        "It read data using optical laser technology",
+                        "It was waterproof and floats in water"
+                    ],
+                    answer: 0
+                },
+                {
+                    q: "What can Magnetic Tape hold in modern archival storage?",
+                    options: [
+                        "Sound (audio), moving images (video), or computer data",
+                        "Physical gold leaf plates from 500 BC",
+                        "Clay tablet inscriptions from Mesopotamia",
+                        "Paper bags doubling production annually"
+                    ],
+                    answer: 0
+                },
+                {
+                    q: "What is the primary definition of Microfilms in archival collections?",
+                    options: [
+                        "Reduced size copies of documents",
+                        "Visual evidence of people, places, or events",
+                        "Digital storage media read by laser",
+                        "Series of still images in a presentation sequence"
+                    ],
+                    answer: 0
+                },
+                {
+                    q: "According to the slides, what affects the care and preservation of Photographs?",
+                    options: [
+                        "Black & white and colour photographs may need different preservation methods",
+                        "They must be kept inside magnetic tape drives",
+                        "They can only be viewed using a laser disk drive",
+                        "They are made from sodden hemp mash"
+                    ],
+                    answer: 0
+                },
+                {
+                    q: "How do Optical Disks function to store digital files, photos, songs, and videos?",
+                    options: [
+                        "A laser reads and writes digital information",
+                        "A magnetic head reads tape cassette rolls",
+                        "They are displayed sequentially via slide projectors",
+                        "Individual metal letters are manually arranged"
+                    ],
+                    answer: 0
+                }
             ],
+
+            // WORLD 5: ARCHIVAL FORMAT CLUES & FINAL REVIEW
             [
-                { q: "According to the archival format comparison table, what is the main clue for 'Slides'?", options: ["Audio, video or computer data", "Reduced document images on a flat sheet", "Still image in a presentation sequence", "Visual record evidence"], answer: 2 },
-                { q: "What distinguishes Microfiche from Microfilm on the archival format table?", options: ["Microfiche is on a flat sheet, whereas Microfilm is on a reel", "Microfiche is magnetic tape, whereas Microfilm is optical", "Microfiche stores audio, whereas Microfilm stores photos", "There is no difference"], answer: 0 },
-                { q: "What affected care for Photographs according to slide notes?", options: ["Black and white and colour photographs may need different preservation methods", "They can only be read by laser beams", "They must be kept in water tanks", "They are made from sodden hemp waste"], answer: 0 },
-                { q: "In what year was the first paper mill outside Europe established at Culhuacan / William Rittenhouse in USA?", options: ["AD 1009", "AD 1250", "AD 1680-1690", "AD 1883"], answer: 2 },
-                { q: "What was unique about the Etruscan Gold Book found 70 years ago while digging a canal off the Strouma river in Bulgaria?", options: ["It consists of 3 gold plates dating back to around 500 BC with warrior/horse imagery", "It was printed on Gutenberg's 42-line press", "It was recorded on magnetic cassette tape", "It is the oldest Scottish prayer book"], answer: 0 }
+                {
+                    q: "According to the Archival Format Clues table, what is the main clue for 'Microfilm' vs 'Microfiche'?",
+                    options: [
+                        "Microfilm is on a reel, while Microfiche is on a flat sheet",
+                        "Microfilm holds audio, while Microfiche holds laser data",
+                        "Microfilm uses gold tooling, while Microfiche uses papyrus",
+                        "Microfilm is magnetic, while Microfiche is optical"
+                    ],
+                    answer: 0
+                },
+                {
+                    q: "What device or equipment is needed to view Slides in a traditional setup?",
+                    options: [
+                        "A display device/suitable viewer or slide projector",
+                        "A tape drive cassette player",
+                        "An optical laser disk reader",
+                        "A Gutenberg printing press frame"
+                    ],
+                    answer: 0
+                },
+                {
+                    q: "Where was the first paper mill outside Europe established (1680-1690)?",
+                    options: [
+                        "At Culhuacan / founded by William Rittenhouse in USA",
+                        "In Xativa, Spain",
+                        "In Corbeil-Essonnes, France",
+                        "In Samarkand"
+                    ],
+                    answer: 0
+                },
+                {
+                    q: "What is the primary function of Photographs in archival collections?",
+                    options: [
+                        "Provide visual record evidence of people, places, or events",
+                        "Store computer binary code read by lasers",
+                        "Hold reduced document images on a reel",
+                        "Present still images in an automated presentation sequence"
+                    ],
+                    answer: 0
+                },
+                {
+                    q: "What is the main clue for 'Slides' in the format comparison summary?",
+                    options: [
+                        "Still image in a presentation sequence",
+                        "Audio, video or computer data",
+                        "Reduced document images on a reel",
+                        "Digital data read by laser"
+                    ],
+                    answer: 0
+                }
             ]
         ];
 
