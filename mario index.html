@@ -1,0 +1,1052 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mario's Archive Adventure - Chapter 2 Edition</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Pixel Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Fredoka+One&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        .font-pixel {
+            font-family: 'Press Start 2P', cursive, monospace;
+        }
+        .font-game {
+            font-family: 'Fredoka One', cursive, sans-serif;
+        }
+        
+        /* Mario Color Palette & Pixel Shadows */
+        :root {
+            --mario-red: #E52521;
+            --mario-blue: #002282;
+            --mario-yellow: #FBD000;
+            --mario-green: #43B047;
+            --mario-sky: #5C94FC;
+            --mario-brick: #B84418;
+            --mario-ground: #D86800;
+        }
+
+        body {
+            background-color: var(--mario-sky);
+            font-family: 'Inter', sans-serif;
+            user-select: none;
+        }
+
+        /* Pixelated borders and cards */
+        .pixel-box {
+            border: 4px solid #000;
+            box-shadow: 6px 6px 0px #000;
+            background-color: #FFF;
+        }
+
+        .pixel-box-yellow {
+            border: 4px solid #000;
+            box-shadow: 6px 6px 0px #000;
+            background-color: #FFF8C5;
+        }
+
+        .pixel-btn {
+            border: 3px solid #000;
+            box-shadow: 4px 4px 0px #000;
+            transition: all 0.1s ease;
+        }
+
+        .pixel-btn:hover {
+            transform: translate(-2px, -2px);
+            box-shadow: 6px 6px 0px #000;
+        }
+
+        .pixel-btn:active {
+            transform: translate(2px, 2px);
+            box-shadow: 2px 2px 0px #000;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-left: 2px solid #000;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--mario-red);
+            border: 2px solid #000;
+        }
+
+        /* Pipe style banner */
+        .mario-pipe {
+            background: linear-gradient(90deg, #188000 0%, #43B047 30%, #70E000 50%, #43B047 70%, #188000 100%);
+            border: 4px solid #000;
+            box-shadow: 0 4px 0 #000;
+        }
+
+        /* Cloud Animations */
+        @keyframes moveCloud {
+            0% { transform: translateX(100vw); }
+            100% { transform: translateX(-200px); }
+        }
+        .animate-cloud-slow {
+            animation: moveCloud 35s linear infinite;
+        }
+        .animate-cloud-fast {
+            animation: moveCloud 20s linear infinite;
+        }
+
+        /* Coin Bounce */
+        @keyframes bounceCoin {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        .animate-coin {
+            animation: bounceCoin 1s ease-in-out infinite;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between overflow-x-hidden text-gray-900">
+
+    <!-- Background Clouds -->
+    <div class="fixed top-12 left-0 w-full pointer-events-none z-0 overflow-hidden h-64 opacity-80">
+        <div class="absolute animate-cloud-slow top-4 text-white text-6xl"><i class="fa-solid fa-cloud"></i></div>
+        <div class="absolute animate-cloud-fast top-20 text-white text-5xl" style="animation-delay: -7s;"><i class="fa-solid fa-cloud"></i></div>
+        <div class="absolute animate-cloud-slow top-36 text-white text-7xl" style="animation-delay: -15s;"><i class="fa-solid fa-cloud"></i></div>
+    </div>
+
+    <!-- HEADER / HUD -->
+    <header class="relative z-10 bg-red-600 border-b-4 border-black text-white px-4 py-3 shadow-lg">
+        <div class="max-w-6xl mx-auto flex flex-wrap justify-between items-center gap-2">
+            <!-- Brand -->
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 bg-yellow-400 border-2 border-black rounded-full flex items-center justify-center font-pixel text-red-600 text-xl font-bold shadow">
+                    M
+                </div>
+                <div>
+                    <h1 class="font-pixel text-xs sm:text-sm md:text-base text-yellow-300 tracking-wider">MARIO'S ARCHIVE ADVENTURE</h1>
+                    <p class="text-xs text-red-100 font-semibold">Chapter 2: Early Books, Paper & Archival Media</p>
+                </div>
+            </div>
+
+            <!-- Audio & HUD Stats -->
+            <div class="flex items-center space-x-4 font-pixel text-xs sm:text-sm">
+                <!-- Sound Toggle -->
+                <button id="soundToggleBtn" onclick="toggleSound()" class="bg-yellow-400 text-black px-3 py-1.5 rounded border-2 border-black hover:bg-yellow-300 flex items-center space-x-1">
+                    <i id="soundIcon" class="fa-solid fa-volume-high"></i>
+                    <span id="soundLabel" class="hidden sm:inline">SFX ON</span>
+                </button>
+
+                <!-- HUD Info (Visible during game) -->
+                <div id="hudStats" class="hidden flex items-center space-x-4 bg-red-800 px-3 py-1.5 rounded border-2 border-black">
+                    <div class="flex items-center text-yellow-300" title="Stars (Points)">
+                        <i class="fa-solid fa-star text-base mr-1.5 animate-coin"></i>
+                        <span id="hudStars">0</span>
+                    </div>
+                    <div class="flex items-center text-white" title="Lives">
+                        <i class="fa-solid fa-heart text-red-400 text-base mr-1"></i>
+                        <span>&infin;</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- MAIN CONTENT CONTAINER -->
+    <main class="relative z-10 max-w-4xl mx-auto w-full p-4 my-auto">
+
+        <!-- SCREEN 1: PLAYER REGISTRATION -->
+        <section id="registrationScreen" class="pixel-box p-6 sm:p-8 rounded-lg text-center max-w-lg mx-auto my-8">
+            <div class="mb-6">
+                <div class="inline-block p-4 bg-yellow-300 border-4 border-black rounded-full mb-3 shadow-inner">
+                    <i class="fa-solid fa-book-open text-4xl text-red-600"></i>
+                </div>
+                <h2 class="font-pixel text-lg sm:text-xl text-red-600 mb-2">ARCHIVIST ENTER</h2>
+                <p class="text-xs sm:text-sm text-gray-700 font-medium">Enter your details to register for the Chapter 2 Archive Challenge!</p>
+            </div>
+
+            <form onsubmit="handleRegistration(event)" class="space-y-4 text-left">
+                <div>
+                    <label class="block font-pixel text-xs text-gray-800 mb-1">STUDENT NAME *</label>
+                    <input type="text" id="playerNameInput" required placeholder="e.g. Mario Hero" 
+                        class="w-full px-4 py-2.5 border-3 border-black rounded focus:outline-none focus:ring-2 focus:ring-yellow-400 font-semibold text-gray-800">
+                </div>
+                <div>
+                    <label class="block font-pixel text-xs text-gray-800 mb-1">MATRIX / STUDENT ID *</label>
+                    <input type="text" id="studentIdInput" required placeholder="e.g. 2026123456" 
+                        class="w-full px-4 py-2.5 border-3 border-black rounded focus:outline-none focus:ring-2 focus:ring-yellow-400 font-semibold text-gray-800">
+                </div>
+
+                <button type="submit" class="w-full pixel-btn bg-green-500 hover:bg-green-400 text-white font-pixel py-3.5 rounded text-sm sm:text-base mt-4 flex items-center justify-center space-x-2">
+                    <span>START MISSION</span>
+                    <i class="fa-solid fa-play text-xs"></i>
+                </button>
+            </form>
+        </section>
+
+        <!-- SCREEN 2: MAP / WORLD SELECT -->
+        <section id="mapScreen" class="hidden space-y-6">
+            <div class="pixel-box p-4 sm:p-6 bg-yellow-50 rounded-lg">
+                <div class="flex flex-col sm:flex-row justify-between items-center pb-4 border-b-2 border-black gap-2">
+                    <div>
+                        <span class="font-pixel text-xs text-gray-500 block">PLAYER</span>
+                        <h2 id="displayPlayerName" class="font-pixel text-sm sm:text-base text-red-600">Archivist</h2>
+                        <span id="displayStudentId" class="text-xs text-gray-600 font-mono">ID: -</span>
+                    </div>
+                    <div class="flex items-center space-x-3">
+                        <div class="bg-yellow-300 border-2 border-black px-4 py-2 rounded text-center">
+                            <span class="font-pixel text-xs block text-gray-700">TOTAL STARS</span>
+                            <span id="mapTotalStars" class="font-pixel text-lg text-red-600">0 ★</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-4">
+                    <h3 class="font-pixel text-xs sm:text-sm text-gray-800 mb-4 text-center">SELECT AN ARCHIVE WORLD</h3>
+                    
+                    <!-- 5 Worlds Map Grid -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        
+                        <!-- World 1 -->
+                        <div onclick="startWorld(1)" class="pixel-btn bg-white hover:bg-yellow-100 p-4 rounded cursor-pointer flex items-center space-x-4 border-2 border-black">
+                            <div class="w-12 h-12 bg-red-500 text-white border-2 border-black rounded flex items-center justify-center font-pixel text-lg font-bold flex-shrink-0">
+                                1
+                            </div>
+                            <div class="flex-grow">
+                                <h4 class="font-pixel text-xs text-red-600 mb-1">WORLD 1</h4>
+                                <p class="text-xs font-bold text-gray-800">2.1 Early Books & Paper</p>
+                                <p class="text-xs text-gray-500 mt-1">Siddur, Codices, Book of Kells, Gold Plates</p>
+                            </div>
+                            <div class="text-right">
+                                <span id="w1Status" class="font-pixel text-xs text-gray-400">0/5</span>
+                            </div>
+                        </div>
+
+                        <!-- World 2 -->
+                        <div onclick="startWorld(2)" class="pixel-btn bg-white hover:bg-yellow-100 p-4 rounded cursor-pointer flex items-center space-x-4 border-2 border-black">
+                            <div class="w-12 h-12 bg-blue-500 text-white border-2 border-black rounded flex items-center justify-center font-pixel text-lg font-bold flex-shrink-0">
+                                2
+                            </div>
+                            <div class="flex-grow">
+                                <h4 class="font-pixel text-xs text-blue-600 mb-1">WORLD 2</h4>
+                                <p class="text-xs font-bold text-gray-800">2.2 Historical Evolution</p>
+                                <p class="text-xs text-gray-500 mt-1">Timeline 4000 BC to Modern Paper</p>
+                            </div>
+                            <div class="text-right">
+                                <span id="w2Status" class="font-pixel text-xs text-gray-400">0/5</span>
+                            </div>
+                        </div>
+
+                        <!-- World 3 -->
+                        <div onclick="startWorld(3)" class="pixel-btn bg-white hover:bg-yellow-100 p-4 rounded cursor-pointer flex items-center space-x-4 border-2 border-black">
+                            <div class="w-12 h-12 bg-green-500 text-white border-2 border-black rounded flex items-center justify-center font-pixel text-lg font-bold flex-shrink-0">
+                                3
+                            </div>
+                            <div class="flex-grow">
+                                <h4 class="font-pixel text-xs text-green-600 mb-1">WORLD 3</h4>
+                                <p class="text-xs font-bold text-gray-800">History of Books</p>
+                                <p class="text-xs text-gray-500 mt-1">Papyrus, Islamic Binds, Gutenberg, Industrial</p>
+                            </div>
+                            <div class="text-right">
+                                <span id="w3Status" class="font-pixel text-xs text-gray-400">0/5</span>
+                            </div>
+                        </div>
+
+                        <!-- World 4 -->
+                        <div onclick="startWorld(4)" class="pixel-btn bg-white hover:bg-yellow-100 p-4 rounded cursor-pointer flex items-center space-x-4 border-2 border-black">
+                            <div class="w-12 h-12 bg-yellow-500 text-white border-2 border-black rounded flex items-center justify-center font-pixel text-lg font-bold flex-shrink-0">
+                                4
+                            </div>
+                            <div class="flex-grow">
+                                <h4 class="font-pixel text-xs text-yellow-600 mb-1">WORLD 4</h4>
+                                <p class="text-xs font-bold text-gray-800">Codex & Modern Archival</p>
+                                <p class="text-xs text-gray-500 mt-1">Codex features & 5 Types of Modern Media</p>
+                            </div>
+                            <div class="text-right">
+                                <span id="w4Status" class="font-pixel text-xs text-gray-400">0/5</span>
+                            </div>
+                        </div>
+
+                        <!-- World 5 -->
+                        <div onclick="startWorld(5)" class="pixel-btn bg-white hover:bg-yellow-100 p-4 rounded cursor-pointer flex items-center space-x-4 border-2 border-black md:col-span-2">
+                            <div class="w-12 h-12 bg-purple-600 text-white border-2 border-black rounded flex items-center justify-center font-pixel text-lg font-bold flex-shrink-0">
+                                5
+                            </div>
+                            <div class="flex-grow">
+                                <h4 class="font-pixel text-xs text-purple-600 mb-1">WORLD 5 - FINAL REVIEW</h4>
+                                <p class="text-xs font-bold text-gray-800">Deep Archival & Media Clues</p>
+                                <p class="text-xs text-gray-500 mt-1">Microfilm, Magnetic Tape, Optical Disks, Slides & Clue Table</p>
+                            </div>
+                            <div class="text-right">
+                                <span id="w5Status" class="font-pixel text-xs text-gray-400">0/5</span>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="mt-6 flex justify-between items-center pt-4 border-t-2 border-black">
+                    <button onclick="showLeaderboard()" class="pixel-btn bg-yellow-400 hover:bg-yellow-300 text-black font-pixel px-4 py-2 rounded text-xs flex items-center space-x-1">
+                        <i class="fa-solid fa-trophy"></i>
+                        <span>LEADERBOARD</span>
+                    </button>
+                    <button onclick="resetGameData()" class="pixel-btn bg-gray-300 hover:bg-gray-400 text-black font-pixel px-3 py-2 rounded text-xs">
+                        RESET PROGRESS
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- SCREEN 3: QUIZ GAMEPLAY -->
+        <section id="quizScreen" class="hidden space-y-4">
+            <!-- Quiz Header / Progress -->
+            <div class="pixel-box p-4 bg-white rounded-lg flex flex-wrap justify-between items-center gap-2">
+                <div>
+                    <span id="quizWorldTag" class="font-pixel text-xs bg-red-100 text-red-600 px-2.5 py-1 rounded border border-red-400">WORLD 1-1</span>
+                    <span id="quizProgressText" class="font-pixel text-xs text-gray-600 ml-2">Question 1/5</span>
+                </div>
+                <button onclick="returnToMap()" class="pixel-btn bg-gray-200 hover:bg-gray-300 px-3 py-1 rounded font-pixel text-xs text-black">
+                    <i class="fa-solid fa-map mr-1"></i> MAP
+                </button>
+            </div>
+
+            <!-- Question Card -->
+            <div class="pixel-box p-6 bg-white rounded-lg relative">
+                <div id="slideReferenceBadge" class="inline-block bg-yellow-200 text-yellow-800 font-pixel text-[10px] px-2.5 py-1 rounded border border-yellow-400 mb-3">
+                    <i class="fa-solid fa-file-powerpoint mr-1"></i> SLIDE TOPIC REFERENCE
+                </div>
+
+                <h3 id="questionText" class="text-base sm:text-lg font-bold text-gray-900 mb-6 leading-snug">
+                    Question text will appear here?
+                </h3>
+
+                <!-- Options Grid -->
+                <div id="optionsContainer" class="grid grid-cols-1 gap-3">
+                    <!-- Options injected dynamically -->
+                </div>
+
+                <!-- Feedback Area -->
+                <div id="feedbackBox" class="hidden mt-6 p-4 rounded border-2 border-black font-semibold text-sm">
+                    <div id="feedbackTitle" class="font-pixel text-xs mb-1"></div>
+                    <div id="feedbackText" class="text-xs sm:text-sm"></div>
+                    <button id="nextQuestionBtn" onclick="nextQuestion()" class="mt-4 pixel-btn bg-green-500 hover:bg-green-400 text-white font-pixel px-5 py-2.5 rounded text-xs flex items-center space-x-2">
+                        <span>NEXT QUESTION</span>
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- SCREEN 4: WORLD COMPLETE SUMMARY -->
+        <section id="worldCompleteScreen" class="hidden pixel-box p-6 sm:p-8 rounded-lg text-center bg-white max-w-lg mx-auto">
+            <div class="mb-4">
+                <i class="fa-solid fa-crown text-5xl text-yellow-400 drop-shadow animate-bounce"></i>
+            </div>
+            <h2 class="font-pixel text-lg text-green-600 mb-1">WORLD CLEARED!</h2>
+            <p id="completedWorldTitle" class="text-sm font-bold text-gray-700 mb-4">World 1 Completed</p>
+
+            <div class="bg-yellow-50 border-2 border-black p-4 rounded mb-6 text-left space-y-2">
+                <div class="flex justify-between items-center text-sm">
+                    <span class="font-semibold text-gray-700">Questions Answered:</span>
+                    <span id="summaryCorrect" class="font-pixel text-xs text-green-600">5/5</span>
+                </div>
+                <div class="flex justify-between items-center text-sm">
+                    <span class="font-semibold text-gray-700">Stars Earned:</span>
+                    <span id="summaryStars" class="font-pixel text-xs text-yellow-600">+15 ★</span>
+                </div>
+            </div>
+
+            <button onclick="returnToMap()" class="w-full pixel-btn bg-yellow-400 hover:bg-yellow-300 text-black font-pixel py-3 rounded text-sm">
+                RETURN TO OVERWORLD MAP
+            </button>
+        </section>
+
+        <!-- SCREEN 5: LEADERBOARD MODAL/SCREEN -->
+        <section id="leaderboardScreen" class="hidden pixel-box p-6 bg-white rounded-lg max-w-lg mx-auto">
+            <div class="flex justify-between items-center border-b-2 border-black pb-3 mb-4">
+                <h3 class="font-pixel text-sm text-red-600 flex items-center">
+                    <i class="fa-solid fa-trophy text-yellow-400 mr-2 text-base"></i> ARCHIVIST LEADERBOARD
+                </h3>
+                <button onclick="returnToMap()" class="text-gray-500 hover:text-black font-bold text-xl">&times;</button>
+            </div>
+
+            <div class="overflow-x-auto">
+                <table class="w-full text-left text-xs">
+                    <thead>
+                        <tr class="bg-yellow-300 border-2 border-black font-pixel text-[10px]">
+                            <th class="p-2 border-r-2 border-black">RANK</th>
+                            <th class="p-2 border-r-2 border-black">NAME</th>
+                            <th class="p-2 border-r-2 border-black">ID</th>
+                            <th class="p-2">STARS</th>
+                        </tr>
+                    </thead>
+                    <tbody id="leaderboardTableBody">
+                        <!-- Dynamic rows -->
+                    </tbody>
+                </table>
+            </div>
+
+            <button onclick="returnToMap()" class="mt-6 w-full pixel-btn bg-gray-200 hover:bg-gray-300 font-pixel py-2.5 rounded text-xs">
+                CLOSE LEADERBOARD
+            </button>
+        </section>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="relative z-10 bg-black text-white py-3 px-4 text-center text-xs font-mono border-t-4 border-yellow-400 mt-auto">
+        <p>MARIO'S ARCHIVE ADVENTURE &bull; BASED STRICTLY ON CHAPTER 2 PRESENTATION SLIDES</p>
+    </footer>
+
+    <!-- JAVASCRIPT GAME LOGIC -->
+    <script>
+        /* ==========================================================================
+           AUDIO SYSTEM (Web Audio API - No External Files Required)
+           ========================================================================== */
+        let audioCtx = null;
+        let soundEnabled = true;
+
+        function initAudio() {
+            if (!audioCtx) {
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            }
+        }
+
+        function playCoinSFX() {
+            if (!soundEnabled) return;
+            initAudio();
+            try {
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(987.77, audioCtx.currentTime); // B5
+                osc.frequency.setValueAtTime(1318.51, audioCtx.currentTime + 0.08); // E6
+                gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.3);
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                osc.start();
+                osc.stop(audioCtx.currentTime + 0.3);
+            } catch(e) {}
+        }
+
+        function playWrongSFX() {
+            if (!soundEnabled) return;
+            initAudio();
+            try {
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.type = 'sawtooth';
+                osc.frequency.setValueAtTime(150, audioCtx.currentTime);
+                osc.frequency.setValueAtTime(110, audioCtx.currentTime + 0.1);
+                gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.35);
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                osc.start();
+                osc.stop(audioCtx.currentTime + 0.35);
+            } catch(e) {}
+        }
+
+        function toggleSound() {
+            soundEnabled = !soundEnabled;
+            const icon = document.getElementById('soundIcon');
+            const label = document.getElementById('soundLabel');
+            if (soundEnabled) {
+                icon.className = 'fa-solid fa-volume-high';
+                label.textContent = 'SFX ON';
+            } else {
+                icon.className = 'fa-solid fa-volume-xmark';
+                label.textContent = 'SFX OFF';
+            }
+        }
+
+        /* ==========================================================================
+           SLIDE-BASED QUESTION BANK (Strictly from provided images)
+           ========================================================================== */
+        const QUESTION_BANK = {
+            1: [ // WORLD 1: 2.1 Early Books & Paper
+                {
+                    topic: "2.1 Early Books & Paper - Siddur",
+                    question: "What is the Siddur, dated at around 840 AD?",
+                    options: [
+                        "A Jewish prayer book",
+                        "A Maya pre-Columbian codex",
+                        "The oldest Scottish book",
+                        "A Buddhist holy text"
+                    ],
+                    correct: 0,
+                    explanation: "Slide 2.1 shows: Siddur is 'A Jewish prayer book dated at around 840 AD'."
+                },
+                {
+                    topic: "2.1 Early Books & Paper - Madrid Codex",
+                    question: "Which pre-Columbian Maya culture book is also known as the Tro-Cortesianus Codex?",
+                    options: [
+                        "The Celtic Psalter",
+                        "The Madrid Codex",
+                        "The Nag Hammadi Codices",
+                        "The Book of Kells"
+                    ],
+                    correct: 1,
+                    explanation: "Slide 2.1 specifies: 'The Madrid Codex A.K.A Tro-Cortesianus Codex' (attributable to Maya culture ~900-1521 AD)."
+                },
+                {
+                    topic: "2.1 Early Books & Paper - Gutenberg Bible",
+                    question: "By what other name is the Gutenberg Bible commonly known in historical archives?",
+                    options: [
+                        "36-line Bible",
+                        "42-line Bible",
+                        "Stonyhurst Bible",
+                        "Etruscan Testament"
+                    ],
+                    correct: 1,
+                    explanation: "Slide 2.1 specifies: 'The Gutenberg Bible A.K.A 42-line Bible'."
+                },
+                {
+                    topic: "2.1 Early Books & Paper - Book of Kells",
+                    question: "Where is the Book of Kells currently kept, created by Celtic monks around 800 AD?",
+                    options: [
+                        "Coptic Museum in Cairo, Egypt",
+                        "Trinity College Library in Dublin, Ireland",
+                        "British Library in London",
+                        "National Library of Scotland"
+                    ],
+                    correct: 1,
+                    explanation: "Slide 2.1 specifies: Book of Kells is 'Kept in the Trinity College Library in Dublin, Ireland'."
+                },
+                {
+                    topic: "2.1 Early Books & Paper - Etruscan Gold Book",
+                    question: "Where was the Etruscan Gold Book discovered 70 years ago?",
+                    options: [
+                        "In an excavation at Pyrgi sanctuary",
+                        "Whilst digging a canal off the Strouma river in Bulgaria",
+                        "In the tomb of Saint Cuthbert",
+                        "Inside Culhuacan paper mill"
+                    ],
+                    correct: 1,
+                    explanation: "Slide 2.1 states: Etruscan Gold Book was 'Discovered 70 years ago whilst digging a canal off the Strouma river in Bulgaria'."
+                }
+            ],
+            2: [ // WORLD 2: 2.2 Historical Evolution of Paper and Books
+                {
+                    topic: "2.2 Historical Evolution - A.D. 105",
+                    question: "Who invented paper in A.D. 105 from a mash of sodden hemp waste for the Han emperor of China?",
+                    options: [
+                        "Ziyad ibn Salih",
+                        "Tsai Lun",
+                        "William Rittenhouse",
+                        "Charles Stillwell"
+                    ],
+                    correct: 1,
+                    explanation: "Slide 2.2 (A.D 105): 'Paper invented by Tsai Lun... Made from a mash of sodden hemp waste'."
+                },
+                {
+                    topic: "2.2 Historical Evolution - A.D. 751",
+                    question: "What major event spread papermaking craft westward in A.D. 751 from Samarkand?",
+                    options: [
+                        "Buddhist monks traveled to Spain",
+                        "Ziyad ibn Salih led back skilled prisoners from China army",
+                        "Johannes Gutenberg exported paper mills",
+                        "French soldiers conquered Corbeil-Essonnes"
+                    ],
+                    correct: 1,
+                    explanation: "Slide 2.2 (A.D 751): 'Ziyad ibn Salih lead back the prisoners (China army) which were skilled men in crafts... spread gradually westward'."
+                },
+                {
+                    topic: "2.2 Historical Evolution - A.D. 1009",
+                    question: "After 400 years, where did paper travel from the Arab world to Europe in A.D. 1009?",
+                    options: [
+                        "Xativa, Spain",
+                        "Sicily, Italy",
+                        "Mainz, Germany",
+                        "Corbeil-Essonnes, France"
+                    ],
+                    correct: 0,
+                    explanation: "Slide 2.2 (A.D 1009): 'Paper travel from Arab to Europe, which is in Xativa, Spain'."
+                },
+                {
+                    topic: "2.2 Historical Evolution - A.D. 1798",
+                    question: "Who invented the first papermaking machine in A.D. 1798 while working at Didot's hand paper-making factory?",
+                    options: [
+                        "Charles Stillwell",
+                        "Louis-Nicolas Robert",
+                        "William Rittenhouse",
+                        "Johannes Gutenberg"
+                    ],
+                    correct: 1,
+                    explanation: "Slide 2.2 (A.D 1798): 'Mechanical engineer Louis-Nicolas Robert invented the first papermaking machine'."
+                },
+                {
+                    topic: "2.2 Historical Evolution - A.D. 1883",
+                    question: "What machine did Charles Stillwell invent in A.D. 1883 still used in supermarkets today?",
+                    options: [
+                        "Movable type printing press",
+                        "Machine to make brown paper bags",
+                        "Automated bookbinding machine",
+                        "Microfilm reduction camera"
+                    ],
+                    correct: 1,
+                    explanation: "Slide 2.2 (A.D 1883): 'Charles Stillwell invented machine to make brown paper bag... used in supermarkets'."
+                }
+            ],
+            3: [ // WORLD 3: History of Books
+                {
+                    topic: "History of Books - Papyrus Rolls",
+                    question: "Around 3000 BC, which civilization developed papyrus, a smooth flexible writing material that absorbed ink without smudging?",
+                    options: [
+                        "The Mesopotamians",
+                        "The Egyptians",
+                        "The Romans",
+                        "The Greeks"
+                    ],
+                    correct: 1,
+                    explanation: "Slide History of Books: Papyrus Rolls states: 'Around 3000 BC, the Egyptians developed papyrus'."
+                },
+                {
+                    topic: "History of Books - Islamic Bookbinding",
+                    question: "Which of the following was a distinctive technique developed in Islamic bookbinding (7th century onwards)?",
+                    options: [
+                        "Plastic coil binding",
+                        "Wooden book covers, case-binding methods, and gold tooling",
+                        "False bands with metal rivets",
+                        "Wax tablet diptychs"
+                    ],
+                    correct: 1,
+                    explanation: "Slide Islamic Bookbinding lists techniques: 'Wooden book covers, Case-binding methods, Gold tooling and decorative stamping'."
+                },
+                {
+                    topic: "History of Books - St. Cuthbert Gospel",
+                    question: "What are the approximate dimensions of the 7th-century St. Cuthbert Gospel (Stonyhurst Gospel)?",
+                    options: [
+                        "3.5 x 5 inches",
+                        "8.5 x 11 inches",
+                        "10 x 14 inches",
+                        "2 x 3 inches"
+                    ],
+                    correct: 0,
+                    explanation: "Slide St. Cuthbert Gospel states: 'Small in size, measuring approximately 3.5 x 5 inches'."
+                },
+                {
+                    topic: "History of Books - Gutenberg's Printing Press",
+                    question: "What key innovation did Johannes Gutenberg introduce in the 15th century to improve book production efficiency?",
+                    options: [
+                        "Laser printing technology",
+                        "Movable-type printing",
+                        "Steam-powered papermaking",
+                        "Cloth tape sewing"
+                    ],
+                    correct: 1,
+                    explanation: "Slide Gutenberg's Printing Press states: 'In the 15th century, Johannes Gutenberg introduced movable-type printing'."
+                },
+                {
+                    topic: "History of Books - Industrial Revolution",
+                    question: "During the 1800s Industrial Revolution, why were 'false bands' added to book spines?",
+                    options: [
+                        "To hold pages together tighter",
+                        "To preserve the traditional appearance of older bindings",
+                        "To replace cloth tapes in book sewing",
+                        "To encode digital laser information"
+                    ],
+                    correct: 1,
+                    explanation: "Slide Industrial Revolution & Bookbinding: 'False bands were added to book spines to preserve the traditional appearance of older bindings'."
+                }
+            ],
+            4: [ // WORLD 4: Codex & 5 Types of Modern Archival Materials
+                {
+                    topic: "History of Books - Codex",
+                    question: "Which of the following was NOT a main advantage of the Codex over earlier rolls and tablets?",
+                    options: [
+                        "Readers could open directly to a particular section",
+                        "Both sides of each page could be used for writing",
+                        "It required expensive gold foil coating to preserve text",
+                        "Longer texts could be compiled into one book"
+                    ],
+                    correct: 2,
+                    explanation: "Slide Codex lists advantages: Direct open access, write both sides, compiled longer texts. Gold foil was not a main requirement."
+                },
+                {
+                    topic: "5 Types of Archival Materials - Magnetic Tape",
+                    question: "According to the 5 Types slide, what is the main function of Magnetic Tape (01)?",
+                    options: [
+                        "Reduced size copies of documents",
+                        "Records audio/video or stores computer data",
+                        "Visual evidence of people, places or events",
+                        "Still images shown in sequence"
+                    ],
+                    correct: 1,
+                    explanation: "Slide 5 Types: '01 MAGNETIC TAPE - Records audio/video or stores computer data'."
+                },
+                {
+                    topic: "5 Types of Archival Materials - Microfilms",
+                    question: "How are Microfilms (02) described in the modern archival materials list?",
+                    options: [
+                        "Digital files read by laser",
+                        "Reduced size copies of documents",
+                        "Glass plate photographs",
+                        "Magnetic audio cartridges"
+                    ],
+                    correct: 1,
+                    explanation: "Slide 5 Types: '02 MICROFILMS - Reduced size copies of documents'."
+                },
+                {
+                    topic: "5 Types of Archival Materials - Optical Disks",
+                    question: "What technology is used by Optical Disks (04) to read and store digital files?",
+                    options: [
+                        "Magnetic heads",
+                        "Laser technology",
+                        "Chemical developer solution",
+                        "Light projection bulbs"
+                    ],
+                    correct: 1,
+                    explanation: "Slide 5 Types: '04 OPTICAL DISKS - Store digital files read by laser'."
+                },
+                {
+                    topic: "5 Types of Archival Materials - Slides",
+                    question: "What are Slides (05) defined as in the 5 Types slide?",
+                    options: [
+                        "Reduced document images on a flat sheet",
+                        "Still images shown in sequence",
+                        "Visual evidence recorded on vinyl",
+                        "Moving analog video frames"
+                    ],
+                    correct: 1,
+                    explanation: "Slide 5 Types: '05 SLIDES - Still images shown in sequence'."
+                }
+            ],
+            5: [ // WORLD 5: Deep Archival Details & Format Review
+                {
+                    topic: "Archival Media - Photographs",
+                    question: "What primary purpose do Photographs serve as archival records?",
+                    options: [
+                        "Preserve visual records of people, places and events (provide evidence an event happened)",
+                        "Store high-speed machine code for computers",
+                        "Replace microfiche on flat plastic sheets",
+                        "Sequence projected text automatically"
+                    ],
+                    correct: 0,
+                    explanation: "Slide Photographs: 'Photographs preserve visual records of people, places and events... provide evidence that an event happened'."
+                },
+                {
+                    topic: "Archival Media - Microfilm vs Microfiche",
+                    question: "According to the 'Can you tell them apart?' comparison table, what is the main clue for Microfiche?",
+                    options: [
+                        "Reduced document images on a reel",
+                        "Reduced document images on a flat sheet",
+                        "Digital data read by laser",
+                        "Audio, video or computer data"
+                    ],
+                    correct: 1,
+                    explanation: "Comparison Table: Microfiche clue is 'Reduced document images on a flat sheet' (whereas Microfilm is on a reel)."
+                },
+                {
+                    topic: "Archival Media - Slides Presentation",
+                    question: "What is required to view traditional photo slides according to the Slides detail slide?",
+                    options: [
+                        "A magnetic tape head",
+                        "A display device or suitable viewer / slide projector",
+                        "A laser drive tray",
+                        "A Coptic museum glass case"
+                    ],
+                    correct: 1,
+                    explanation: "Slide Slides: 'What is needed? A display device or suitable viewer, traditional photo slides used a slide projector'."
+                },
+                {
+                    topic: "Archival Media - Optical Disk Storage",
+                    question: "Which items are explicitly listed as storable on Optical Disks in the slides?",
+                    options: [
+                        "Documents, Photos, Songs, Videos",
+                        "Clay tablets, Papyrus scrolls, Parchment",
+                        "Raw sodden hemp fibers only",
+                        "Microfilm reels and flat sheets"
+                    ],
+                    correct: 0,
+                    explanation: "Slide Optical Disks: CAN STORE ? Documents, Photos, Songs, Videos ('Think of a disk used to save a movie, music or files')."
+                },
+                {
+                    topic: "Format Matching Summary",
+                    question: "Match the main clue: 'Visual record evidence' belongs to which format in the summary table?",
+                    options: [
+                        "Magnetic tape",
+                        "Photographs",
+                        "Optical disk",
+                        "Microfilm"
+                    ],
+                    correct: 1,
+                    explanation: "Summary Table: Format 'Photographs' corresponds to Main Clue 'Visual record evidence'."
+                }
+            ]
+        };
+
+        /* ==========================================================================
+           GAME STATE
+           ========================================================================== */
+        let player = {
+            name: '',
+            studentId: '',
+            totalStars: 0,
+            worldProgress: { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 }
+        };
+
+        let currentWorld = 1;
+        let currentQuestionIdx = 0;
+        let currentWorldStars = 0;
+
+        /* Initialize App */
+        window.addEventListener('DOMContentLoaded', () => {
+            loadSavedData();
+            updateHUD();
+        });
+
+        function handleRegistration(e) {
+            e.preventDefault();
+            const nameInput = document.getElementById('playerNameInput').value.trim();
+            const idInput = document.getElementById('studentIdInput').value.trim();
+
+            if (!nameInput || !idInput) return;
+
+            player.name = nameInput;
+            player.studentId = idInput;
+
+            saveData();
+            showMapScreen();
+        }
+
+        function showMapScreen() {
+            document.getElementById('registrationScreen').classList.add('hidden');
+            document.getElementById('quizScreen').classList.add('hidden');
+            document.getElementById('worldCompleteScreen').classList.add('hidden');
+            document.getElementById('leaderboardScreen').classList.add('hidden');
+
+            document.getElementById('mapScreen').classList.remove('hidden');
+            document.getElementById('hudStats').classList.remove('hidden');
+
+            document.getElementById('displayPlayerName').textContent = player.name;
+            document.getElementById('displayStudentId').textContent = 'ID: ' + player.studentId;
+            document.getElementById('mapTotalStars').textContent = player.totalStars + ' ★';
+
+            updateMapBadges();
+        }
+
+        function updateMapBadges() {
+            for (let w = 1; w <= 5; w++) {
+                const badge = document.getElementById(`w${w}Status`);
+                if (badge) {
+                    const score = player.worldProgress[w] || 0;
+                    badge.textContent = `${score}/5`;
+                    if (score === 5) {
+                        badge.className = "font-pixel text-xs text-green-600 font-bold";
+                    } else if (score > 0) {
+                        badge.className = "font-pixel text-xs text-yellow-600 font-bold";
+                    }
+                }
+            }
+        }
+
+        function startWorld(worldNum) {
+            currentWorld = worldNum;
+            currentQuestionIdx = 0;
+            currentWorldStars = 0;
+
+            document.getElementById('mapScreen').classList.add('hidden');
+            document.getElementById('quizScreen').classList.remove('hidden');
+
+            loadQuestion();
+        }
+
+        function loadQuestion() {
+            const worldQuestions = QUESTION_BANK[currentWorld];
+            const q = worldQuestions[currentQuestionIdx];
+
+            document.getElementById('quizWorldTag').textContent = `WORLD ${currentWorld}-${currentQuestionIdx + 1}`;
+            document.getElementById('quizProgressText').textContent = `Question ${currentQuestionIdx + 1}/${worldQuestions.length}`;
+            document.getElementById('slideReferenceBadge').innerHTML = `<i class="fa-solid fa-file-powerpoint mr-1"></i> TOPIC: ${q.topic}`;
+            document.getElementById('questionText').textContent = q.question;
+
+            const optionsContainer = document.getElementById('optionsContainer');
+            optionsContainer.innerHTML = '';
+
+            // Hide feedback
+            const feedbackBox = document.getElementById('feedbackBox');
+            feedbackBox.classList.add('hidden');
+
+            q.options.forEach((opt, idx) => {
+                const btn = document.createElement('button');
+                btn.className = "pixel-btn w-full text-left p-3.5 bg-gray-50 hover:bg-yellow-200 text-gray-800 rounded font-semibold text-xs sm:text-sm flex items-center space-x-3 border-2 border-black transition-all";
+                
+                // Option prefix letter
+                const letter = String.fromCharCode(65 + idx);
+                btn.innerHTML = `
+                    <span class="w-7 h-7 bg-black text-white rounded font-pixel text-xs flex items-center justify-center flex-shrink-0">${letter}</span>
+                    <span class="flex-grow">${opt}</span>
+                `;
+
+                btn.onclick = () => checkAnswer(idx);
+                optionsContainer.appendChild(btn);
+            });
+        }
+
+        function checkAnswer(selectedIdx) {
+            const worldQuestions = QUESTION_BANK[currentWorld];
+            const q = worldQuestions[currentQuestionIdx];
+            const feedbackBox = document.getElementById('feedbackBox');
+            const feedbackTitle = document.getElementById('feedbackTitle');
+            const feedbackText = document.getElementById('feedbackText');
+            const optionBtns = document.getElementById('optionsContainer').children;
+
+            // Disable further clicks on options
+            for (let btn of optionBtns) {
+                btn.onclick = null;
+                btn.classList.remove('hover:bg-yellow-200');
+            }
+
+            if (selectedIdx === q.correct) {
+                // Correct
+                playCoinSFX();
+                player.totalStars += 3;
+                currentWorldStars += 3;
+
+                optionBtns[selectedIdx].className = "pixel-btn w-full text-left p-3.5 bg-green-200 text-green-900 rounded font-semibold text-xs sm:text-sm flex items-center space-x-3 border-2 border-black";
+
+                feedbackBox.className = "mt-6 p-4 rounded border-2 border-black bg-green-100 text-green-900";
+                feedbackTitle.textContent = "★ CORRECT! (+3 STARS)";
+                feedbackText.textContent = q.explanation;
+            } else {
+                // Wrong
+                playWrongSFX();
+                player.totalStars = Math.max(0, player.totalStars - 1); // -1 star penalty min 0
+
+                optionBtns[selectedIdx].className = "pixel-btn w-full text-left p-3.5 bg-red-200 text-red-900 rounded font-semibold text-xs sm:text-sm flex items-center space-x-3 border-2 border-black";
+                optionBtns[q.correct].className = "pixel-btn w-full text-left p-3.5 bg-green-200 text-green-900 rounded font-semibold text-xs sm:text-sm flex items-center space-x-3 border-2 border-black";
+
+                feedbackBox.className = "mt-6 p-4 rounded border-2 border-black bg-red-100 text-red-900";
+                feedbackTitle.textContent = "❌ INCORRECT (-1 STAR PENALTY)";
+                feedbackText.textContent = q.explanation;
+            }
+
+            // Record progress score for world
+            if (selectedIdx === q.correct) {
+                player.worldProgress[currentWorld] = Math.min(5, (player.worldProgress[currentWorld] || 0) + 1);
+            }
+
+            updateHUD();
+            saveData();
+
+            feedbackBox.classList.remove('hidden');
+        }
+
+        function nextQuestion() {
+            const worldQuestions = QUESTION_BANK[currentWorld];
+            currentQuestionIdx++;
+
+            if (currentQuestionIdx < worldQuestions.length) {
+                loadQuestion();
+            } else {
+                showWorldComplete();
+            }
+        }
+
+        function showWorldComplete() {
+            document.getElementById('quizScreen').classList.add('hidden');
+            document.getElementById('worldCompleteScreen').classList.remove('hidden');
+
+            document.getElementById('completedWorldTitle').textContent = `World ${currentWorld} Completed`;
+            document.getElementById('summaryCorrect').textContent = `${player.worldProgress[currentWorld]}/5 Questions Correct`;
+            document.getElementById('summaryStars').textContent = `+${currentWorldStars} Stars`;
+
+            saveLeaderboard();
+        }
+
+        function returnToMap() {
+            showMapScreen();
+        }
+
+        function updateHUD() {
+            document.getElementById('hudStars').textContent = player.totalStars;
+        }
+
+        /* Local Storage & Leaderboard Management */
+        function saveData() {
+            localStorage.setItem('mario_archive_player', JSON.stringify(player));
+        }
+
+        function loadSavedData() {
+            const saved = localStorage.getItem('mario_archive_player');
+            if (saved) {
+                try {
+                    player = JSON.parse(saved);
+                    if (player.name && player.studentId) {
+                        showMapScreen();
+                    }
+                } catch(e){}
+            }
+        }
+
+        function resetGameData() {
+            if (confirm("Are you sure you want to reset your player score and world progress?")) {
+                player.totalStars = 0;
+                player.worldProgress = { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 };
+                saveData();
+                showMapScreen();
+            }
+        }
+
+        function saveLeaderboard() {
+            let board = JSON.parse(localStorage.getItem('mario_archive_leaderboard') || '[]');
+            // Check if player exists
+            const existingIdx = board.findIndex(p => p.studentId === player.studentId);
+            if (existingIdx >= 0) {
+                board[existingIdx].totalStars = Math.max(board[existingIdx].totalStars, player.totalStars);
+                board[existingIdx].name = player.name;
+            } else {
+                board.push({
+                    name: player.name,
+                    studentId: player.studentId,
+                    totalStars: player.totalStars
+                });
+            }
+            // Sort high score
+            board.sort((a,b) => b.totalStars - a.totalStars);
+            localStorage.setItem('mario_archive_leaderboard', JSON.stringify(board));
+        }
+
+        function showLeaderboard() {
+            saveLeaderboard();
+            let board = JSON.parse(localStorage.getItem('mario_archive_leaderboard') || '[]');
+            const tbody = document.getElementById('leaderboardTableBody');
+            tbody.innerHTML = '';
+
+            if (board.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="4" class="p-4 text-center text-gray-500">No archivists registered yet!</td></tr>`;
+            } else {
+                board.forEach((entry, idx) => {
+                    const tr = document.createElement('tr');
+                    tr.className = idx % 2 === 0 ? "bg-white" : "bg-yellow-50";
+                    tr.innerHTML = `
+                        <td class="p-2 border-r border-black font-pixel text-[10px] text-center">${idx + 1}</td>
+                        <td class="p-2 border-r border-black font-semibold text-gray-800">${escapeHtml(entry.name)}</td>
+                        <td class="p-2 border-r border-black font-mono text-gray-600">${escapeHtml(entry.studentId)}</td>
+                        <td class="p-2 font-pixel text-xs text-yellow-600">${entry.totalStars} ★</td>
+                    `;
+                    tbody.appendChild(tr);
+                });
+            }
+
+            document.getElementById('mapScreen').classList.add('hidden');
+            document.getElementById('leaderboardScreen').classList.remove('hidden');
+        }
+
+        function escapeHtml(str) {
+            return str.replace(/[&<>"']/g, function(m) {
+                return {
+                    '&': '&amp;',
+                    '<': '&lt;',
+                    '>': '&gt;',
+                    '"': '&quot;',
+                    "'": '&#039;'
+                }[m];
+            });
+        }
+    </script>
+</body>
+</html>
